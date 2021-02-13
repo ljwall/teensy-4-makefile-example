@@ -1,8 +1,13 @@
 #include <Arduino.h>
 
+extern "C" {
+#include "lib/setup.h"
+}
+
 int main(void)
 {
-	pinMode(13, OUTPUT);
+	setupPins();
+
 	while (1) {
 		digitalWrite(13, HIGH);
 		delay(500);

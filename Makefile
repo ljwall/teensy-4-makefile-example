@@ -106,7 +106,7 @@ CPUOPTIONS = -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -mthumb
 #************************************************************************
 
 # CPPFLAGS = compiler options for C and C++
-CPPFLAGS = -Wall -g -O2 $(CPUOPTIONS) -MMD $(OPTIONS) -I. -Icores/teensy4 -ffunction-sections -fdata-sections
+CPPFLAGS = -Wall -g -O2 $(CPUOPTIONS) -MMD $(OPTIONS) -Isrc -Icores/teensy4 -ffunction-sections -fdata-sections
 
 # compiler options for C++ only
 CXXFLAGS = -std=gnu++14 -felide-constructors -fno-exceptions -fpermissive -fno-rtti -Wno-error=narrowing
@@ -130,23 +130,25 @@ AR = $(COMPILERPATH)/arm-none-eabi-gcc-ar
 
 LOADER_CLI = $(TEENSY_LOADER_CLI_PATH)/teensy_loader_cli
 
-C_FILES := $(wildcard *.c)
-CPP_FILES := $(wildcard *.cpp)
+SRC = $(abspath ./src)
+
+C_FILES := $(shell find $(SRC) -name *.c)
+CPP_FILES := $(shell find $(SRC) -name *.cpp)
 OBJS := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o)
 CORE_C_FILES := $(shell find cores/teensy4/ -name '*.c')
 CORE_CPP_FILES := $(shell find cores/teensy4/ -name '*.cpp' | grep -v main.cpp)
 CORE_OBJS := $(CORE_C_FILES:.c=.o) $(CORE_CPP_FILES:.cpp=.o)
-CORE_ARCHIVE := core.a
+CORE_ARCHIVE := $(SRC)/core.a
 
 
 # the actual makefile rules (all .o files built by GNU make's default implicit rules)
 
-all: $(TARGET).hex
+all: $(SRC)/$(TARGET).hex
 
-$(TARGET).elf: $(OBJS) $(MCU_LD) $(CORE_ARCHIVE)
+$(SRC)/$(TARGET).elf: $(OBJS) $(MCU_LD) $(CORE_ARCHIVE)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(CORE_ARCHIVE) $(LIBS)
 
-%.hex: %.elf
+$(SRC)/$(TARGET).hex: $(SRC)/$(TARGET).elf
 	$(SIZE) $<
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
@@ -158,9 +160,12 @@ $(CORE_ARCHIVE): $(CORE_OBJS)
 
 clean:
 	@make -C cores/teensy4 clean
-	@rm -f *.o *.d *.a $(TARGET).elf $(TARGET).hex
+	@rm -f $(SRC)/$(TARGET).elf $(SRC)/$(TARGET).hex
+	@rm -f $(shell find $(SRC) -name *.o)
+	@rm -f $(shell find $(SRC) -name *.d)
+	@rm -f $(shell find $(SRC) -name *.a)
 
-flash: $(TARGET).hex
-	$(LOADER_CLI) --mcu=$(MCU_LOWER) -v -w $(TARGET).hex
+flash: $(SRC)/$(TARGET).hex
+	$(LOADER_CLI) --mcu=$(MCU_LOWER) -v -w $(SRC)/$(TARGET).hex
 
 .PHONY: flash clean all
