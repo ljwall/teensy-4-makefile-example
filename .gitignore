@@ -1,0 +1,12 @@
+*.elf
+*.d
+*.hex
+*.o
+nbproject
+*~
+*.bak
+*.BAK
+*.orig
+*.tmp
+*.TMP
+core.a
