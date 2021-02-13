@@ -1,23 +1,23 @@
 # Teensy 4.x Makefile project example
 
-This is a sample project, demonstrating building and flashing a teensy 4.x C++
+This is a sample project, demonstrating building and flashing a Teensy 4.x C++
 project from the command line, using a Makefile, without the Arduino IDE, but
 still the Teensy Arduino libraries.
 
 # Requirements
 
-- A linux PC. (May work on mac too, I don't know.)
+- A Linux PC. (May work on mac too, I don't know.)
 - The GNU GCC cross compiler for ARM EABI (bare-metal) target, a.k.a.
 `arm-none-eabi-gcc`. This is probably in your package repo. Also (though this
-is not requrired) if you install the Arduino IDE and teensy Loader GUI then
+is not required) if you install the Arduino IDE and Teensy Loader GUI then
 you'll get a copy of the `arm-none-eabi-gcc` tool-chain.
 - The [command line Teensy loader application](https://github.com/PaulStoffregen/teensy_loader_cli).
-For refernce, I've installed it from commit hash `0a9ad5f70ab096d1fef004ced5da7dceea39927a`.
+For reference, I've installed it from commit hash `0a9ad5f70ab096d1fef004ced5da7dceea39927a`.
 
 # How-to
 
-1. Clone this repository, including submodules. The folder `./cores` is the
-teensy core libraries for Arduino.
+1. Clone this repository, including sub-modules. The folder `./cores` is the
+Teensy core libraries for Arduino.
 2. Edit the `Makefile`
   - There are tow blocks at the top to choose between Teensy 4.0 and 4.1.
   - You may need to update `COMPILERPATH`.
