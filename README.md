@@ -4,6 +4,8 @@ This is a sample project, demonstrating building and flashing a Teensy 4.x C++
 project from the command line, using a Makefile, without the Arduino IDE, but
 still the Teensy Arduino libraries.
 
+The `Makefile` itself is derived from the example in the [Teensy core libraries for Arduino](https://github.com/PaulStoffregen/cores).
+
 # Requirements
 
 - A Linux PC. (May work on mac too, I don't know.)
@@ -18,8 +20,13 @@ For reference, I've installed it from commit hash `0a9ad5f70ab096d1fef004ced5da7
 
 1. Clone this repository, including sub-modules. The folder `./cores` is the
 Teensy core libraries for Arduino.
+
+```shell
+git clone --recurse-submodules  git@github.com:ljwall/teensy-4-makefile-example.git
+```
+
 2. Edit the `Makefile`
-  - There are tow blocks at the top to choose between Teensy 4.0 and 4.1.
+  - There are two blocks at the top to choose between Teensy 4.0 and 4.1.
   - You may need to update `COMPILERPATH`.
   - You may need to update `TEENSY_LOADER_CLI_PATH`.
 3. These steps:
@@ -28,7 +35,7 @@ Teensy core libraries for Arduino.
 make
 ```
 
-will make `main.hex` but not attempt to flash anything
+will make `main.hex` but not attempt to flash anything.
 
 ```shell
 make flash
